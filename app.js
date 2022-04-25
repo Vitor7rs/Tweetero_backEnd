@@ -37,13 +37,16 @@ app.get("/tweets", (req, res) => {
         }
     }
     else if(tweets.length){
-        for (let i = 0; i < 10; i++) {
+        for (let i = tweets.length - 9; i < tweets.length; i++) {
             let tweet = {
                 "username": tweets[i].username,
                 "avatar": users.find((user) => user.username === tweets[i].username).avatar,
                 "tweet": tweets[i].tweet,
             };
             screenTweets.push(tweet);
+            if(screenTweets.length === 10){
+                break;
+            }
         }
     }
     screenTweets.reverse();
