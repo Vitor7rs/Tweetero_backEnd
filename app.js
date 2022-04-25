@@ -10,18 +10,44 @@ const tweets = [];
 
 app.post('/sign-up', (req, res) => {
     const user = req.body;
-
     users.push(user);
 
     res.send("OK");
 });
 
 app.post('/tweets', (req, res) => {
-    const tweet = req.body; 
+    const tweet = req.body;
 
     tweets.push(tweet);
 
     res.send("OK");
+});
+
+app.get("/tweets", (req, res) => {
+    const screenTweets = [];
+    if ((tweets.length !== 0) && (tweets.length<=10)) {
+
+        for (let i = 0; i < tweets.length; i++) {
+            let tweet = {
+                "username": tweets[i].username,
+                "avatar": users.find((user) => user.username === tweets[i].username).avatar,
+                "tweet": tweets[i].tweet,
+            };
+            screenTweets.push(tweet);
+        }
+    }
+    else if(tweets.length){
+        for (let i = 0; i < 10; i++) {
+            let tweet = {
+                "username": tweets[i].username,
+                "avatar": users.find((user) => user.username === tweets[i].username).avatar,
+                "tweet": tweets[i].tweet,
+            };
+            screenTweets.push(tweet);
+        }
+    }
+    screenTweets.reverse();
+    res.send(screenTweets);
 });
 
 app.listen(5000, () => { console.log('playing api') });
